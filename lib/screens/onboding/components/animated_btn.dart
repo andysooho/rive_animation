@@ -7,9 +7,9 @@ class AnimatedBtn extends StatelessWidget {
 
   const AnimatedBtn({
     Key? key,
-    required RiveAnimationController btnAnimationcontroller,
+    required RiveAnimationController btnAnimationController,
     required this.press,
-  })  : _btnAnimationcontroller = btnAnimationcontroller,
+  })  : _btnAnimationcontroller = btnAnimationController,
         super(key: key);
 
   @override
