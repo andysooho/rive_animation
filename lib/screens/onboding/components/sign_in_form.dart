@@ -2,6 +2,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:rive/rive.dart';
+import 'package:rive_animation/screens/entryPoint/entry_points.dart';
+import 'package:rive_animation/utils/rive_utils.dart';
 
 class SignInForm extends StatefulWidget {
   const SignInForm({super.key});
@@ -22,13 +24,6 @@ class _SignInFormState extends State<SignInForm> {
 
   late SMITrigger confetti;
 
-  StateMachineController getRiveController(Artboard artboard) {
-    StateMachineController? controller =
-        StateMachineController.fromArtboard(artboard, "State Machine 1");
-    artboard.addController(controller!);
-    return controller;
-  }
-
   void signIn(BuildContext context) {
     setState(() {
       isShowLoading = true;
@@ -38,14 +33,28 @@ class _SignInFormState extends State<SignInForm> {
       if (_formKey.currentState!.validate()) {
         //입력이 정상이면 로그인 처리, 성공 애니메이션을 보여준다.
         check.fire();
-        Future.delayed(const Duration(seconds: 2), () {
-          setState(() {
-            isShowLoading = false;
-          });
-          //성공 이후, 콘페티 애니메이션을 보여준다.
-          confetti.fire();
-          //TODO:다음화면으로 이동
-        });
+        Future.delayed(
+          const Duration(seconds: 2),
+          () {
+            setState(() {
+              isShowLoading = false;
+            });
+            //성공 이후, 콘페티 애니메이션을 보여준다.
+            confetti.fire();
+            //다음화면으로 이동
+            Future.delayed(
+              const Duration(seconds: 1),
+              () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => const EntryPoint(),
+                  ),
+                );
+              },
+            );
+          },
+        );
       } else {
         //에러 애니메이션을 보여준다.
         error.fire();
@@ -150,7 +159,7 @@ class _SignInFormState extends State<SignInForm> {
                   "assets/RiveAssets/check.riv",
                   onInit: (artboard) {
                     StateMachineController controller =
-                        getRiveController(artboard);
+                        RiveUtils.getRiveController(artboard);
                     check = controller.findSMI("Check") as SMITrigger;
                     error = controller.findSMI("Error") as SMITrigger;
                     reset = controller.findSMI("Reset") as SMITrigger;
@@ -160,14 +169,17 @@ class _SignInFormState extends State<SignInForm> {
             : const SizedBox(),
         isShowConfetti
             ? CustomPositioned(
-                child: RiveAnimation.asset(
-                  "assets/RiveAssets/confetti.riv",
-                  onInit: (artboard) {
-                    StateMachineController controller =
-                        getRiveController(artboard);
-                    confetti =
-                        controller.findSMI("Trigger explosion") as SMITrigger;
-                  },
+                child: Transform.scale(
+                  scale: 7,
+                  child: RiveAnimation.asset(
+                    "assets/RiveAssets/confetti.riv",
+                    onInit: (artboard) {
+                      StateMachineController controller =
+                          RiveUtils.getRiveController(artboard);
+                      confetti =
+                          controller.findSMI("Trigger explosion") as SMITrigger;
+                    },
+                  ),
                 ),
               )
             : const SizedBox(),
