@@ -3,6 +3,7 @@ import 'package:rive/rive.dart';
 import 'package:rive_animation/constants.dart';
 import 'package:rive_animation/model/rive_model.dart';
 import 'package:rive_animation/screens/entryPoint/components/animated_bar.dart';
+import 'package:rive_animation/screens/home/home_screen.dart';
 import 'package:rive_animation/utils/rive_utils.dart';
 
 class EntryPoint extends StatefulWidget {
@@ -17,9 +18,13 @@ class _EntryPointState extends State<EntryPoint> {
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: Scaffold(
-        bottomNavigationBar: Container(
+    return Scaffold(
+      extendBody: true,
+      resizeToAvoidBottomInset: false,
+      backgroundColor: Colors.white,
+      body: HomeScreen(),
+      bottomNavigationBar: SafeArea(
+        child: Container(
           padding: const EdgeInsets.all(12),
           margin: const EdgeInsets.symmetric(horizontal: 24),
           decoration: BoxDecoration(
