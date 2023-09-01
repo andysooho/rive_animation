@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:rive/rive.dart';
 import 'package:rive_animation/constants.dart';
+import 'package:rive_animation/model/rive_model.dart';
+import 'package:rive_animation/screens/entryPoint/components/animated_bar.dart';
 import 'package:rive_animation/utils/rive_utils.dart';
 
 class EntryPoint extends StatefulWidget {
@@ -11,8 +13,7 @@ class EntryPoint extends StatefulWidget {
 }
 
 class _EntryPointState extends State<EntryPoint> {
-  late SMIBool searchTrigger;
-  //데모
+  RiveAsset selectedBottomNav = bottomNavs[0];
 
   @override
   Widget build(BuildContext context) {
@@ -32,26 +33,42 @@ class _EntryPointState extends State<EntryPoint> {
                 5,
                 (index) => GestureDetector(
                   onTap: () {
-                    bottomNavs[index].input!.change(true);
+                    bottomNavs[index].status!.change(true);
+                    if (bottomNavs[index] != selectedBottomNav) {
+                      setState(() {
+                        selectedBottomNav = bottomNavs[index];
+                      });
+                    }
                     Future.delayed(const Duration(seconds: 1), () {
-                      bottomNavs[index].input!.change(false);
+                      bottomNavs[index].status!.change(false);
                     });
                   },
-                  child: SizedBox(
-                    height: 36,
-                    width: 36,
-                    child: RiveAnimation.asset(
-                      "assets/RiveAssets/icons.riv",
-                      artboard: bottomNavs[index].artboard,
-                      onInit: (artboard) {
-                        StateMachineController controller =
-                            RiveUtils.getRiveController(artboard,
-                                stateMachineName:
-                                    bottomNavs[index].stateMachineName);
-                        bottomNavs[index].input =
-                            controller.findSMI("active") as SMIBool;
-                      },
-                    ),
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      AnimatedBar(
+                          isActive: bottomNavs[index] == selectedBottomNav),
+                      SizedBox(
+                        height: 36,
+                        width: 36,
+                        child: Opacity(
+                          opacity:
+                              selectedBottomNav == bottomNavs[index] ? 1 : 0.2,
+                          child: RiveAnimation.asset(
+                            "assets/RiveAssets/icons.riv",
+                            artboard: bottomNavs[index].artboard,
+                            onInit: (artboard) {
+                              StateMachineController controller =
+                                  RiveUtils.getRiveController(artboard,
+                                      stateMachineName:
+                                          bottomNavs[index].stateMachineName);
+                              bottomNavs[index].status =
+                                  controller.findSMI("active") as SMIBool;
+                            },
+                          ),
+                        ),
+                      ),
+                    ],
                   ),
                 ),
               ),
@@ -62,41 +79,3 @@ class _EntryPointState extends State<EntryPoint> {
     );
   }
 }
-
-class RiveAsset {
-  final String artboard, stateMachineName, title, src;
-  late SMIBool? input;
-
-  RiveAsset(
-    this.src, {
-    required this.artboard,
-    required this.stateMachineName,
-    required this.title,
-    this.input,
-  });
-
-  set setInput(SMIBool status) {
-    input = status;
-  }
-}
-
-List<RiveAsset> bottomNavs = [
-  RiveAsset("assets/RiveAssets/icons.riv",
-      artboard: "CHAT", stateMachineName: "CHAT_Interactivity", title: "Chat"),
-  RiveAsset("assets/RiveAssets/icons.riv",
-      artboard: "SEARCH",
-      stateMachineName: "SEARCH_Interactivity",
-      title: "Search"),
-  RiveAsset("assets/RiveAssets/icons.riv",
-      artboard: "TIMER",
-      stateMachineName: "TIMER_Interactivity",
-      title: "Chat"),
-  RiveAsset("assets/RiveAssets/icons.riv",
-      artboard: "BELL",
-      stateMachineName: "BELL_Interactivity",
-      title: "Notifications"),
-  RiveAsset("assets/RiveAssets/icons.riv",
-      artboard: "USER",
-      stateMachineName: "USER_Interactivity",
-      title: "Profile"),
-];
