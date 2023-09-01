@@ -27,7 +27,7 @@ Future<Object?> customSignInDialog(
     pageBuilder: (context, animation, secondaryAnimation) {
       return Center(
         child: Container(
-          height: 620,
+          height: 680,
           margin: const EdgeInsets.symmetric(horizontal: 16),
           padding: const EdgeInsets.symmetric(vertical: 32, horizontal: 24),
           decoration: BoxDecoration(
