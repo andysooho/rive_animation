@@ -96,7 +96,15 @@ class _SignInFormState extends State<SignInForm> {
                   decoration: InputDecoration(
                     prefixIcon: Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                      child: SvgPicture.asset("assets/icons/email.svg"),
+                      child: Transform.scale(
+                        scale: 0.5,
+                        child: SvgPicture.asset(
+                          "assets/icons/email.svg",
+                          width: 38,
+                          height: 40,
+                          allowDrawingOutsideViewBox: true,
+                        ),
+                      ),
                     ),
                   ),
                 ),
@@ -120,7 +128,10 @@ class _SignInFormState extends State<SignInForm> {
                   decoration: InputDecoration(
                     prefixIcon: Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 8),
-                      child: SvgPicture.asset("assets/icons/password.svg"),
+                      child: SvgPicture.asset(
+                        "assets/icons/password.svg",
+                        allowDrawingOutsideViewBox: true,
+                      ),
                     ),
                   ),
                 ),

@@ -103,6 +103,7 @@ Future<Object?> customSignInDialog(
                             "assets/icons/google_box.svg",
                             height: 64,
                             width: 64,
+                            allowDrawingOutsideViewBox: true,
                           ),
                         ),
                       ],

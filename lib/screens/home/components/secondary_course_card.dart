@@ -51,7 +51,10 @@ class SecondaryCourseCard extends StatelessWidget {
             ),
           ),
           const SizedBox(width: 8),
-          SvgPicture.asset(iconsSrc)
+          SvgPicture.asset(
+            iconsSrc,
+            allowDrawingOutsideViewBox: true,
+          )
         ],
       ),
     );
