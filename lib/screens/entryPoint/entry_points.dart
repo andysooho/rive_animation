@@ -30,8 +30,11 @@ class _EntryPointState extends State<EntryPoint> {
       backgroundColor: backgroundColor2,
       body: Stack(
         children: [
-          Positioned(
+          AnimatedPositioned(
+            duration: const Duration(milliseconds: 300),
+            curve: Curves.fastLinearToSlowEaseIn,
             width: 288,
+            left: isSideMenuClosed ? -288 : 0,
             height: MediaQuery.of(context).size.height,
             child: SideMenu(),
           ),
