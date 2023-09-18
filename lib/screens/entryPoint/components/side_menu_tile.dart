@@ -29,6 +29,19 @@ class SideMenuTile extends StatelessWidget {
         ),
         Stack(
           children: [
+            AnimatedPositioned(
+              duration: const Duration(milliseconds: 300),
+              curve: Curves.fastLinearToSlowEaseIn,
+              height: 56,
+              width: isActive ? 288 : 0,
+              left: 0,
+              child: Container(
+                decoration: const BoxDecoration(
+                  color: Color(0xFF6792FF),
+                  borderRadius: BorderRadius.all(Radius.circular(10)),
+                ),
+              ),
+            ),
             ListTile(
               onTap: press,
               leading: SizedBox(
