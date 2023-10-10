@@ -115,61 +115,65 @@ class _EntryPointState extends State<EntryPoint> with TickerProviderStateMixin {
           ),
         ],
       ),
-      bottomNavigationBar: SafeArea(
-        child: Container(
-          padding: const EdgeInsets.all(12),
-          margin: const EdgeInsets.symmetric(horizontal: 24),
-          decoration: BoxDecoration(
-            color: backgroundColor2.withOpacity(0.8),
-            borderRadius: const BorderRadius.all(Radius.circular(24)),
-          ),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              ...List.generate(
-                5,
-                (index) => GestureDetector(
-                  onTap: () {
-                    bottomNavs[index].status!.change(true);
-                    if (bottomNavs[index] != selectedBottomNav) {
-                      setState(() {
-                        selectedBottomNav = bottomNavs[index];
+      bottomNavigationBar: Transform.translate(
+        offset: Offset(0, 70 * animation.value),
+        child: SafeArea(
+          child: Container(
+            padding: const EdgeInsets.all(12),
+            margin: const EdgeInsets.symmetric(horizontal: 24),
+            decoration: BoxDecoration(
+              color: backgroundColor2.withOpacity(0.8),
+              borderRadius: const BorderRadius.all(Radius.circular(24)),
+            ),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                ...List.generate(
+                  5,
+                  (index) => GestureDetector(
+                    onTap: () {
+                      bottomNavs[index].status!.change(true);
+                      if (bottomNavs[index] != selectedBottomNav) {
+                        setState(() {
+                          selectedBottomNav = bottomNavs[index];
+                        });
+                      }
+                      Future.delayed(const Duration(seconds: 1), () {
+                        bottomNavs[index].status!.change(false);
                       });
-                    }
-                    Future.delayed(const Duration(seconds: 1), () {
-                      bottomNavs[index].status!.change(false);
-                    });
-                  },
-                  child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      AnimatedBar(
-                          isActive: bottomNavs[index] == selectedBottomNav),
-                      SizedBox(
-                        height: 36,
-                        width: 36,
-                        child: Opacity(
-                          opacity:
-                              selectedBottomNav == bottomNavs[index] ? 1 : 0.2,
-                          child: RiveAnimation.asset(
-                            "assets/RiveAssets/icons.riv",
-                            artboard: bottomNavs[index].artboard,
-                            onInit: (artboard) {
-                              StateMachineController controller =
-                                  RiveUtils.getRiveController(artboard,
-                                      stateMachineName:
-                                          bottomNavs[index].stateMachineName);
-                              bottomNavs[index].status =
-                                  controller.findSMI("active") as SMIBool;
-                            },
+                    },
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        AnimatedBar(
+                            isActive: bottomNavs[index] == selectedBottomNav),
+                        SizedBox(
+                          height: 36,
+                          width: 36,
+                          child: Opacity(
+                            opacity: selectedBottomNav == bottomNavs[index]
+                                ? 1
+                                : 0.2,
+                            child: RiveAnimation.asset(
+                              "assets/RiveAssets/icons.riv",
+                              artboard: bottomNavs[index].artboard,
+                              onInit: (artboard) {
+                                StateMachineController controller =
+                                    RiveUtils.getRiveController(artboard,
+                                        stateMachineName:
+                                            bottomNavs[index].stateMachineName);
+                                bottomNavs[index].status =
+                                    controller.findSMI("active") as SMIBool;
+                              },
+                            ),
                           ),
                         ),
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
         ),
       ),
