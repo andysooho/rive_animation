@@ -86,26 +86,32 @@ class _EntryPointState extends State<EntryPoint> with TickerProviderStateMixin {
               ),
             ),
           ),
-          MenuBtn(
-            riveOnInit: (artboard) {
-              StateMachineController controller = RiveUtils.getRiveController(
-                artboard,
-                stateMachineName: "State Machine",
-              );
-              isSideBarClosed = controller.findSMI("isOpen") as SMIBool;
-              isSideBarClosed.value = true;
-            },
-            press: () {
-              isSideBarClosed.value = !isSideBarClosed.value;
-              if (isSideMenuClosed) {
-                _animationController.forward();
-              } else {
-                _animationController.reverse();
-              }
-              setState(() {
-                isSideMenuClosed = isSideBarClosed.value;
-              });
-            },
+          AnimatedPositioned(
+            duration: const Duration(milliseconds: 300),
+            curve: Curves.fastOutSlowIn,
+            left: isSideMenuClosed ? 0 : 230,
+            top: 5,
+            child: MenuBtn(
+              riveOnInit: (artboard) {
+                StateMachineController controller = RiveUtils.getRiveController(
+                  artboard,
+                  stateMachineName: "State Machine",
+                );
+                isSideBarClosed = controller.findSMI("isOpen") as SMIBool;
+                isSideBarClosed.value = true;
+              },
+              press: () {
+                isSideBarClosed.value = !isSideBarClosed.value;
+                if (isSideMenuClosed) {
+                  _animationController.forward();
+                } else {
+                  _animationController.reverse();
+                }
+                setState(() {
+                  isSideMenuClosed = isSideBarClosed.value;
+                });
+              },
+            ),
           ),
         ],
       ),
