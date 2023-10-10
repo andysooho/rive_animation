@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:rive/rive.dart';
 import 'package:rive_animation/constants.dart';
@@ -67,13 +69,20 @@ class _EntryPointState extends State<EntryPoint> with TickerProviderStateMixin {
             height: MediaQuery.of(context).size.height,
             child: SideMenu(),
           ),
-          Transform.translate(
-            offset: Offset(animation.value * 288, 0),
-            child: Transform.scale(
-              scale: scaleAnimation.value,
-              child: ClipRRect(
-                borderRadius: BorderRadius.all(Radius.circular(24)),
-                child: const HomeScreen(),
+          Transform(
+            alignment: Alignment.center,
+            transform: Matrix4.identity()
+              ..setEntry(3, 2, 0.001)
+              ..rotateY(
+                  animation.value - 30 * animation.value * pi / 180), //30도 회전
+            child: Transform.translate(
+              offset: Offset(animation.value * 288, 0),
+              child: Transform.scale(
+                scale: scaleAnimation.value,
+                child: ClipRRect(
+                  borderRadius: BorderRadius.all(Radius.circular(24)),
+                  child: const HomeScreen(),
+                ),
               ),
             ),
           ),
